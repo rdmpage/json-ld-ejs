@@ -244,7 +244,11 @@ get_property_value = function(key, propertyID) {
 
 <%
 
-var item = data['@graph'][0];
+var item = null;
+
+//item = data['@graph'][0]; // root of graph with single item
+
+item = data;
 
 %>
 
@@ -283,27 +287,47 @@ var item = data['@graph'][0];
 
 <!-- title -->
 <div style="font-size:18px;font-weight:bold;margin-top:0.5em;">
-	<%= get_literal(data['@graph'][0].name) %>
+	<%= get_literal(item.name) %>
 </div>
 
 <!-- authors -->
-
 <div style="font-size:0.8em;margin-top:0.5em;">
 
 <% if (item.creator) {
 	var authors = [];
 		for (var i in item.creator) {
 			// role
-			
-			
 			if (item.creator[i]['@type'] == 'Role') { 
 				authors.push('<u>' + get_literal(item.creator[i].creator.name) + '</u>');
+			}
+
+			// perosn
+			if (item.creator[i]['@type'] == 'Person') { 
+				authors.push('<u>' + get_literal(item.creator[i].name) + '</u>');
 			}
 		
 		}
 		var author_string = authors.join(', ');
 		%>
 		<%- author_string %>
+		<%  
+		
+		
+} %>
+</div>
+
+<!-- keywords -->
+<div style="font-size:0.8em;margin-top:0.5em;">
+
+<% if (item.keywords) {
+	var keywords = [];
+		for (var i in item.keywords) {
+			keywords.push(item.keywords[i]);
+		}
+		var keywords_string = keywords.join('; ');
+		%>
+		<b>KEYWORDS:</b>
+		<%- keywords_string %>
 		<%  
 		
 		
@@ -496,6 +520,187 @@ data = {
     ]
 };
 */
+
+
+data = {
+  "description": "Ferguson, D.J., Glatz, R.V., Yeates, D. K. (2019): New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia. Zootaxa 4646 (2): 331-345, DOI: https://doi.org/10.11646/zootaxa.4646.2.8", 
+  "creator": [
+    {
+      "@type": "Person", 
+      "name": "Ferguson, D.J."
+    }, 
+    {
+      "@type": "Person", 
+      "name": "Glatz, R.V."
+    }, 
+    {
+      "@type": "Person", 
+      "name": "Yeates, D. K."
+    }
+  ], 
+  "hasPart": [
+    {
+      "@id": "http://treatment.plazi.org/id/EA2F87DF264EFFF4D7E5FA537F88FD9C", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://treatment.plazi.org/id/EA2F87DF264AFFFBD7E5FDE87B85FE54", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://treatment.plazi.org/id/EA2F87DF2645FFFFD7E5FDA07D78FE98", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349267", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349267", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349269", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349269", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349273", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349273", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349275", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349275", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349279", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349279", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349283", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349283", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349287", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349287", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349289", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349289", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349293", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349293", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.5281/zenodo.3349297", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "http://zenodo.org/record/3349297", 
+      "@type": "CreativeWork"
+    }
+  ], 
+  "image": "https://zenodo.org/static/img/logos/zenodo-gradient-round.svg", 
+  "citation": [
+    {
+      "@id": "https://doi.org/10.5962/bhl.title.15792", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.11646/zootaxa.3680.1.6", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.11646/zootaxa.3802.4.7", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.3897/BDJ.2.e4016", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.1163/ej.9789004148970.I-459.65", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.1111/syen.12115", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.1071/IS08035", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.11646/zootaxa.1295.1.1", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.11646/zootaxa.1372.1.2", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.3897/zookeys.95.1461", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.1111/syen.12147", 
+      "@type": "CreativeWork"
+    }, 
+    {
+      "@id": "https://doi.org/10.1071/IT97029", 
+      "@type": "CreativeWork"
+    }
+  ], 
+  "datePublished": "2019-07-24", 
+  "url": "https://zenodo.org/record/3349265", 
+  "headline": "New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia", 
+  "keywords": [
+    "Biodiversity", 
+    "Taxonomy", 
+    "Animalia", 
+    "Arthropoda", 
+    "Insecta", 
+    "Diptera", 
+    "Therevidae"
+  ], 
+  "@context": "https://schema.org/", 
+  "identifier": "https://doi.org/10.11646/zootaxa.4646.2.8", 
+  "@id": "https://doi.org/10.11646/zootaxa.4646.2.8", 
+  "@type": "ScholarlyArticle", 
+  "name": "New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia"
+};
 
 
 
