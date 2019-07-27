@@ -246,9 +246,9 @@ get_property_value = function(key, propertyID) {
 
 var item = null;
 
-//item = data['@graph'][0]; // root of graph with single item
+item = data['@graph'][0]; // root of graph with single item
 
-item = data;
+//item = data;
 
 %>
 
@@ -329,8 +329,6 @@ item = data;
 		<b>KEYWORDS:</b>
 		<%- keywords_string %>
 		<%  
-		
-		
 } %>
 </div>
 
@@ -344,7 +342,7 @@ item = data;
 	id = get_property_value(item.identifier, 'doi');	  
 	if (id != '') {  %>	
 		DOI:
-		<a href="https://doi.org/<%= id %>">
+		<a href="https://doi.org/<%=id%>">
 		<%= id %>
 		</a>
 	<% }
@@ -353,7 +351,7 @@ item = data;
 	id = get_property_value(item.identifier, 'pmid');	  
 	if (id != '') {  %>	
 		PMID:
-		<a href="https://www.ncbi.nlm.nih.gov/pubmed/<%= id %>">
+		<a href="https://www.ncbi.nlm.nih.gov/pubmed/<%=id%>">
 		<%= id %>
 		</a>
 	<% }
@@ -474,54 +472,10 @@ var data = {
     ]
 };
 
+
+
+
 /*
-data = {
-    "@context": {
-        "@vocab": "http://schema.org/"
-    },
-    "@graph": [
-        {
-            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008",
-            "@type": "ScholarlyArticle",
-            "creator": [
-                {
-                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/1"
-                },
-                {
-                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/2"
-                },
-                {
-                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/3"
-                },
-                {
-                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/4"
-                }
-            ],
-            "datePublished": "2005",
-            "identifier": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008",
-            "name": "\u6dee\u5357\u5730\u5340\u5132\u85cf\u4e2d\u85e5\u6750\u5b73\u751f\u7c89\u87a8\u7684\u7fa4\u843d\u7d44\u6210\u53ca\u591a\u6a23\u6027"
-        },
-        {
-            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/1",
-            "creator": "\u674e\u671d\u54c1"
-        },
-        {
-            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/2",
-            "creator": "\u6c5f\u4f73\u4f73"
-        },
-        {
-            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/3",
-            "creator": "\u8cc0\u9a65"
-        },
-        {
-            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2005.02.008#creator/4",
-            "creator": "\u738b\u6167\u52c7"
-        }
-    ]
-};
-*/
-
-
 data = {
   "description": "Ferguson, D.J., Glatz, R.V., Yeates, D. K. (2019): New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia. Zootaxa 4646 (2): 331-345, DOI: https://doi.org/10.11646/zootaxa.4646.2.8", 
   "creator": [
@@ -702,7 +656,7 @@ data = {
   "name": "New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia"
 };
 
-
+*/
 
 display_data(data);
 
