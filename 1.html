@@ -144,6 +144,8 @@ var template_work = `
 
 <%
 
+// Define functions in template, see https://stackoverflow.com/a/40968695/9684
+
 //----------------------------------------------------------------------------------------
 // Get a single string from a literal that may have multilingual values
 get_literal = function(key) {
@@ -361,6 +363,157 @@ item = data['@graph'][0]; // root of graph with single item
  </div>	
 
 `;
+
+var template_taxon_name = `
+
+<%
+
+// Define functions in template, see https://stackoverflow.com/a/40968695/9684
+
+//----------------------------------------------------------------------------------------
+// Get a single string from a literal that may have multilingual values
+get_literal = function(key) {
+	var literal = '';
+	
+	// literal is a simple string
+	if (typeof key === 'string') {
+		literal = key;
+	}
+	
+	// name is an object so we have one language stored in @value
+	if (typeof key === 'object' && !Array.isArray(key)) {	
+		literal = key['@value'];
+	} else {
+		// name is an array of objects and/or strings (need to think about this)
+		if (Array.isArray(key)) {
+			literal = key[0]['@value'];
+		}
+	}
+	
+	return literal;
+}
+
+//----------------------------------------------------------------------------------------
+// Convert ISO data to a human-readable string (PubMed-style)
+// My databases use -00 to indicate no month or no day, and this confuses Javascript
+// Date so we need to set the options appropriately
+isodate_to_string = function (datestring) {
+
+	// By default assume datestring is a year only
+	var options = {};
+	options.year = 'numeric';
+	
+	// Test for valid month, then day (because we use -00 to indicate no data)
+	var m = null;
+	
+	if (!m) {	
+		m = datestring.match(/^([0-9]{4})$/);
+		if (m) {
+			// year only
+			datestring = m[1]; 
+		}
+	}
+	
+	if (!m) {		
+		m = datestring.match(/^([0-9]{4})-([0-9]{2})-00/);
+		if (m) {
+			
+			if (m[2] == '00') {
+				// Javascript can't handle -00-00 date string so set to January 1st 
+				// which won't be output as we're only outputting the year
+				datestring = m[1] + '-01-01';
+			} else {
+				// We have a month but no day
+				datestring = m[1] + '-' + m[2] + '-01';
+				options.month = 'short';
+			}		
+		}
+	}
+	
+	if (!m) {	
+		m = datestring.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})/);
+		if (m) {
+			// we have yea, month, and day
+			options.month = 'short';
+			options.day = 'numeric';
+		}
+	}
+	
+	var d = new Date(datestring);
+	datestring = d.toLocaleString('en-gb', options);
+	
+	return datestring;		
+}
+
+//----------------------------------------------------------------------------------------
+
+get_property_value = function(key, propertyID) {
+	var value = '';
+	
+	if (typeof key === 'object' && !Array.isArray(key)) {	
+		value = key.value;
+	} else {
+		if (Array.isArray(key)) {
+			for (var i in key) {
+				if (key[i].propertyID === propertyID) {
+					value = key[i].value;
+				}
+			}
+		}	
+	}
+	
+	return value;
+}
+
+%>
+
+
+<%
+
+var item = null;
+
+item = data['@graph'][0]; // root of graph with single item
+
+//item = data;
+
+%>
+
+<!-- title -->
+<div style="font-size:18px;font-weight:bold;margin-top:0.5em;">
+	<%= get_literal(item['dc:title']) %>
+</div>
+
+<!-- publishedIn -->
+<div style="font-size:0.7em;margin-top:0.5em;">
+	<%= get_literal(item['tcom:publishedIn']) %>
+
+	<% if (item['tcom:microreference']) { %>
+	(see page <%= get_literal(item['tcom:microreference']) %> )
+	<% } %>
+
+
+	<%= get_literal(item['dwc:namePublishedIn']) %>
+	
+	<% if (item['nmbe:publishedOnPage']) { %>
+	(see page <%= get_literal(item['nmbe:publishedOnPage']) %> )
+	<% } %>
+	
+	
+</div>
+
+<!-- identifiers -->
+<div style="font-size:0.7em;margin-top:0.5em;">
+
+		LSID:
+		<a href="http://www.lsid.info/<%=item['@id']%>">
+		<%= item['@id'] %>
+		</a>
+	
+	
+</div>
+
+`;
+
 
 
 var data = {
@@ -658,9 +811,81 @@ data = {
 
 */
 
+// taxonomic names
+
+data = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:organismnames.com:name:1609635",
+            "@type": "TaxonName",
+            "dc:creator": {
+                "@id": "http://organismnames.com"
+            },
+            "dc:identifier": "urn:lsid:organismnames.com:name:1609635",
+            "dc:title": "Paraulopus okamurai",
+            "tcom:microreference": "396",
+            "tcom:publishedIn": "Two new species of Paraulopus (Osteichthyes: Aulopiformes) from New Zealand and eastern Australia and comparisons with P. nigripinnis. Species Diversity, 7(4), November 2002: 393-404.  396 [Zoological Record Volume 139]",
+            "nameComplete": "Paraulopus okamurai",
+            "nomenclaturalCode": {
+                "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#ICZN"
+            },
+            "rdfs:seeAlso": {
+                "@id": "http://organismnames.com/namedetails.htm?lsid=1609635"
+            }
+        }
+    ]
+};
+
+data = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "tc": "http://rs.tdwg.org/ontology/voc/TaxonConcept#",
+        "dwc": "http://rs.tdwg.org/dwc/terms/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "nmbe": "urn:lsid:nmbe.ch:predicates:"
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:nmbe.ch:spidersp:049015",
+            "dc:creator": {
+                "@id": "http://www.wsc.nmbe.ch"
+            },
+            "dc:date": "2019-07-10",
+            "dc:identifier": "urn:lsid:nmbe.ch:spidersp:049015",
+            "dc:subject": "Ochyrocera jarocha Valdez-Mondragón, 2017",
+            "dc:title": "Ochyrocera jarocha",
+            "dc:type": "Scientific Name",
+            "dwc:namePublishedIn": "Valdez-Mondragón, A. (2017). On the poorly known haplogynae spiders of the genus Ochyrocera Simon (Araneae, Ochyroceratidae) from Mexico: description of two new species with an updated identification key for Mexican species. Zootaxa 4226(2): 194-204.",
+            "dwc:nomenclaturalCode": "ICZN",
+            "dwc:taxonRank": "species",
+            "tc:hasInformation": {
+                "@id": "https://wsc.nmbe.ch/species/55430"
+            },
+            "authorship": "Valdez-Mondragón",
+            "genusPart": "Ochyrocera",
+            "infraspecificEpithet": "",
+            "nameComplete": "Ochyrocera jarocha",
+            "specificEpithet": "jarocha",
+            "year": "2017",
+            "nmbe:publishedOnPage": "196",
+            "nmbe:statusString": "VALID"
+        }
+    ]
+}
+;
+
 display_data(data);
 
-render(template_work);
+//render(template_work);
+render(template_taxon_name);
 
 
 </script>
