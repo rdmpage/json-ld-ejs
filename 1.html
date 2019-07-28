@@ -498,7 +498,44 @@ item = data['@graph'][0]; // root of graph with single item
 	(see page <%= get_literal(item['nmbe:publishedOnPage']) %> )
 	<% } %>
 	
+</div>
+
+<!-- publishedInCitation -->
+<!-- need to handle native IF and my augmented versions -->
+<div style="font-size:0.7em;margin-top:0.5em;">
 	
+	<% if (item['tcom:publishedInCitation']) { 
+		// Index Fungorum
+		if (item['tcom:publishedInCitation']['@type'] 
+			&& item['tcom:publishedInCitation']['@type'] == 'tpc:PublicationCitation') {
+				var parts = [];
+				
+				if (item['tcom:publishedInCitation']['tpc:title']) {
+					parts.push (item['tcom:publishedInCitation']['tpc:title']);
+				}
+
+				if (item['tcom:publishedInCitation']['tpc:volume']) {
+					parts.push (item['tcom:publishedInCitation']['tpc:volume']);
+				}
+
+				if (item['tcom:publishedInCitation']['tpc:number']) {
+					parts.push (item['tcom:publishedInCitation']['tpc:number']);
+				}
+
+				if (item['tcom:publishedInCitation']['tpc:pages']) {
+					parts.push ('( see page ' + item['tcom:publishedInCitation']['tpc:pages'] + ')');
+				}
+
+				if (item['tcom:publishedInCitation']['tpc:year']) {
+					parts.push (item['tcom:publishedInCitation']['tpc:year']);
+				}
+				
+				if (parts.length > 0) {
+					var citation = parts.join(' '); %>
+					<%= citation %>
+				<% }			
+		}
+	} %>
 </div>
 
 <!-- identifiers -->
@@ -511,6 +548,50 @@ item = data['@graph'][0]; // root of graph with single item
 	
 	
 </div>
+
+<!-- code -->
+<div style="font-size:0.7em;margin-top:0.5em;">
+
+	<% if (item['dwc:nomenclaturalCode']) { %>
+		Code:
+		<%= get_literal(item['dwc:nomenclaturalCode']) %>
+	<% } %>
+
+	<% if (item['nomenclaturalCode']) { 
+		var code = item['nomenclaturalCode']['@id'];
+		code = code.replace('http://rs.tdwg.org/ontology/voc/TaxonName#', ''); %>
+		Code:
+		<%= code %>
+	<% } %>
+	
+	
+</div>
+
+<!-- types -->
+
+<div style="font-size:0.7em;margin-top:0.5em;">
+
+		<% if (item['typifiedBy']) { %>
+			Type(s):
+			<% for (var i in item['typifiedBy']) { %>
+				<%= item['typifiedBy'][i]['dc:title'] %>
+			<% }
+		} %>
+</div>
+
+
+
+<!-- source -->
+<div style="font-size:0.7em;margin-top:0.5em;">
+
+	<% if (item['tc:hasInformation']) { %>
+	More information:
+	<a href="<%= item['tc:hasInformation']['@id'] %>">
+	<%= item['tc:hasInformation']['@id'] %>
+	</a>
+	<% } %>
+</div>
+
 
 `;
 
@@ -813,7 +894,7 @@ data = {
 
 // taxonomic names
 
-data = {
+var ion = {
     "@context": {
         "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
         "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
@@ -842,7 +923,7 @@ data = {
     ]
 };
 
-data = {
+var spider = {
     "@context": {
         "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
         "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
@@ -881,6 +962,226 @@ data = {
     ]
 }
 ;
+
+
+var ipni = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "tm": "http://rs.tdwg.org/ontology/voc/Team#",
+        "tp": "http://rs.tdwg.org/ontology/voc/Person#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "tm:hasMember": {
+            "@id": "http://rs.tdwg.org/ontology/voc/Team#hasMember",
+            "@container": "@set"
+        },
+        "typifiedBy": {
+            "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#typifiedBy",
+            "@container": "@set"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:ipni.org:names:1019484-1",
+            "@type": "TaxonName",
+            "dc:title": "Notheria diaphana P.O'Byrne & J.J.Verm.",
+            "dcterms:created": "2003-07-02 00:00:00.0",
+            "dcterms:modified": "2018-06-05 10:18:52.0",
+            "tcom:publishedIn": "Gard. Bull. Singapore 52(2): 286. 2000 ",
+            "tcom:versionedAs": {
+                "@id": "urn:lsid:ipni.org:names:1019484-1:1.6"
+            },
+            "authorship": "P.O'Byrne & J.J.Verm.",
+            "authorteam": {
+                "@id": "_:b0",
+                "@type": "tm:Team",
+                "tm:hasMember": [
+                    {
+                        "@id": "_:b1",
+                        "tm:index": "1",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:36319-1"
+                        },
+                        "tm:role": "Publishing Author"
+                    },
+                    {
+                        "@id": "_:b2",
+                        "tm:index": "2",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:35414-1"
+                        },
+                        "tm:role": "Publishing Author"
+                    }
+                ],
+                "tm:name": "P.O'Byrne & J.J.Verm."
+            },
+            "genusPart": "Notheria",
+            "nameComplete": "Notheria diaphana",
+            "nomenclaturalCode": {
+                "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#botanical"
+            },
+            "rankString": "spec.",
+            "specificEpithet": "diaphana",
+            "typifiedBy": [
+                {
+                    "@id": "_:b3",
+                    "@type": "NomenclaturalType",
+                    "dc:title": " SBG-O 192, SING (holo)",
+                    "typeOfType": {
+                        "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#holo"
+                    },
+                    "typeSpecimen": " SBG-O 192, SING"
+                }
+            ],
+            "year": "2000",
+            "owl:versionInfo": "1.6"
+        }
+    ]
+};
+
+var ipni_basionym = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "tm": "http://rs.tdwg.org/ontology/voc/Team#",
+        "tp": "http://rs.tdwg.org/ontology/voc/Person#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "tm:hasMember": {
+            "@id": "http://rs.tdwg.org/ontology/voc/Team#hasMember",
+            "@container": "@set"
+        },
+        "typifiedBy": {
+            "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#typifiedBy",
+            "@container": "@set"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:ipni.org:names:77179054-1",
+            "@type": "TaxonName",
+            "dc:title": "Bryobium diaphanum (P.O'Byrne & J.J.Verm.) Schuit., Y.P.Ng & H.A.Pedersen",
+            "dcterms:created": "2018-05-24 12:38:22.0",
+            "dcterms:modified": "2018-05-24 12:38:22.0",
+            "tcom:publishedIn": "Bot. J. Linn. Soc. 186(2): 193. 2018 [25 Jan 2018] [epublished]",
+            "tcom:versionedAs": {
+                "@id": "urn:lsid:ipni.org:names:77179054-1:1.1"
+            },
+            "authorship": "(P.O'Byrne & J.J.Verm.) Schuit., Y.P.Ng & H.A.Pedersen",
+            "authorteam": {
+                "@id": "_:b0",
+                "@type": "tm:Team",
+                "tm:hasMember": [
+                    {
+                        "@id": "_:b1",
+                        "tm:index": "1",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:26386-1"
+                        },
+                        "tm:role": "Combination Author"
+                    },
+                    {
+                        "@id": "_:b2",
+                        "tm:index": "2",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:20006032-1"
+                        },
+                        "tm:role": "Combination Author"
+                    },
+                    {
+                        "@id": "_:b3",
+                        "tm:index": "3",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:36076-1"
+                        },
+                        "tm:role": "Combination Author"
+                    },
+                    {
+                        "@id": "_:b4",
+                        "tm:index": "1",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:36319-1"
+                        },
+                        "tm:role": "Basionym Author"
+                    },
+                    {
+                        "@id": "_:b5",
+                        "tm:index": "2",
+                        "tm:member": {
+                            "@id": "urn:lsid:ipni.org:authors:35414-1"
+                        },
+                        "tm:role": "Basionym Author"
+                    }
+                ],
+                "tm:name": "(P.O'Byrne & J.J.Verm.) Schuit., Y.P.Ng & H.A.Pedersen"
+            },
+            "basionymAuthorship": "P.O'Byrne & J.J.Verm.",
+            "combinationAuthorship": "Schuit., Y.P.Ng & H.A.Pedersen",
+            "genusPart": "Bryobium",
+            "hasBasionym": {
+                "@id": "urn:lsid:ipni.org:names:1019484-1"
+            },
+            "nameComplete": "Bryobium diaphanum",
+            "nomenclaturalCode": {
+                "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#botanical"
+            },
+            "rankString": "spec.",
+            "specificEpithet": "diaphanum",
+            "year": "2018",
+            "owl:versionInfo": "1.1"
+        }
+    ]
+}
+;
+
+var indexf = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "tm": "http://rs.tdwg.org/ontology/voc/Team#",
+        "tp": "http://rs.tdwg.org/ontology/voc/Person#",
+        "tpc": "http://rs.tdwg.org/ontology/voc/PublicationCitation#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "dc": "http://purl.org/dc/elements/1.1/"
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:indexfungorum.org:names:814035",
+            "@type": "TaxonName",
+            "dc:title": "Sebacina aureomagnifica Wartchow, Sulzabacher & Ovrebo2015",
+            "tcom:publishedInCitation": {
+                "@id": "_:b0",
+                "@type": "tpc:PublicationCitation",
+                "tpc:number": "no. 109",
+                "tpc:pages": "4",
+                "tpc:title": "Mycol. Progr.",
+                "tpc:volume": "14",
+                "tpc:year": "2015"
+            },
+            "authorship": "Wartchow, Sulzabacher & Ovrebo",
+            "basionymAuthorship": "Wartchow, Sulzabacher & Ovrebo",
+            "genusPart": "Sebacina",
+            "microReference": "4",
+            "nameComplete": "Sebacina aureomagnifica",
+            "nomenclaturalCode": {
+                "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#ICBN",
+                "@type": "NomenclaturalCodeTerm"
+            },
+            "rankString": "sp.",
+            "specificEpithet": "aureomagnifica",
+            "year": "2015",
+            "owl:versionInfo": "1.1.2.1"
+        }
+    ]
+}
+;
+
+
+
+data = ipni;
 
 display_data(data);
 
