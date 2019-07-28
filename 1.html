@@ -1,5 +1,21 @@
 <html>
 <head>
+
+	<style>
+		/* taxonomic name */
+		.genusPart {
+			font-style: italic;
+		}
+		.infragenericEpithet {
+			font-style: italic;
+		}
+		.specificEpithet {
+			font-style: italic;
+		}
+		.infraspecificEpithet {
+			font-style: italic;
+		}
+	</style>
 	
 <script src="js/jsonld.js"></script>
 <script src="js/ejs.js"></script>
@@ -483,6 +499,36 @@ item = data['@graph'][0]; // root of graph with single item
 	<%= get_literal(item['dc:title']) %>
 </div>
 
+<!-- parsed taxonomic name -->
+<div style="margin-top:0.5em;">
+<% if (item.uninomial) {%>
+	<%if (item.rankString == 'gen.' || item['dwc:taxonRank'] == 'genus') {%>
+		<span class="genusPart"><%=item.uninomial%></span>
+	<%} else {%>	
+		<%=item.uninomial%>
+	<%}%>
+<%	} else {
+		if (item.genusPart) {%>
+			<span class="genusPart"><%=item.genusPart%></span>
+		<%}
+		if (item.infragenericEpithet) {%>
+		
+			<%if (item.rankString == 'sect.') {%>
+				<span> sect. </span>
+			<%}%>
+		
+			<span class="infragenericEpithet"><%=item.infragenericEpithet%></span>
+		<%}
+		if (item.specificEpithet) {%>
+			<span class="specificEpithet"><%=item.specificEpithet%></span>
+		<%}
+		if (item.infraspecificEpithet) {%>
+			<span class="infraspecificEpithet"><%=item.infraspecificEpithet%></span>
+		<%}
+		
+	}%>
+</div>
+
 <!-- publishedIn -->
 <div style="font-size:0.7em;margin-top:0.5em;">
 	<%= get_literal(item['tcom:publishedIn']) %>
@@ -523,7 +569,7 @@ item = data['@graph'][0]; // root of graph with single item
 				}
 
 				if (item['tcom:publishedInCitation']['tpc:pages']) {
-					parts.push ('( see page ' + item['tcom:publishedInCitation']['tpc:pages'] + ')');
+					parts.push (item['tcom:publishedInCitation']['tpc:pages']);
 				}
 
 				if (item['tcom:publishedInCitation']['tpc:year']) {
@@ -597,7 +643,7 @@ item = data['@graph'][0]; // root of graph with single item
 
 
 
-var data = {
+var work = {
     "@context": {
         "@vocab": "http://schema.org/",
         "creator": {
@@ -1179,9 +1225,77 @@ var indexf = {
 }
 ;
 
+var ipni_person = {
+    "@context": {
+        "@vocab": "http://rs.tdwg.org/ontology/voc/TaxonName#",
+        "tcom": "http://rs.tdwg.org/ontology/voc/Common#",
+        "tm": "http://rs.tdwg.org/ontology/voc/Team#",
+        "tp": "http://rs.tdwg.org/ontology/voc/Person#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dc": "http://purl.org/dc/elements/1.1/",
+        "tm:hasMember": {
+            "@id": "http://rs.tdwg.org/ontology/voc/Team#hasMember",
+            "@container": "@set"
+        },
+        "typifiedBy": {
+            "@id": "http://rs.tdwg.org/ontology/voc/TaxonName#typifiedBy",
+            "@container": "@set"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:ipni.org:authors:31201-1",
+            "@type": "tp:Person",
+            "dc:title": "Henri Ernest Baillon",
+            "dcterms:created": "2003-07-02 00:00:00.0",
+            "dcterms:modified": "2003-07-02 00:00:00.0",
+            "tp:alias": {
+                "@id": "_:b0",
+                "@type": "tp:PersonNameAlias",
+                "tp:forenames": "Henri Ernest",
+                "tp:isPreferred": "true",
+                "tp:standardForm": "Baill.",
+                "tp:surname": "Baillon"
+            },
+            "tp:geographicScope": "France",
+            "tp:lifeSpan": "1827-1895",
+            "tp:subjectScope": [
+                "Botany",
+                "Pteridophytes",
+                "Mycology",
+                "Bryophytes",
+                "Spermatophytes"
+            ],
+            "owl:versionInfo": "1.1"
+        }
+    ]
+};
+
+var rg = {
+    "@context": "http://schema.org/",
+    "@type": "Person",
+    "mainEntityOfPage": "https://www.researchgate.net/profile/Roger_De_Keyzer",
+    "name": "Roger de Keyzer",
+    "image": "https://i1.rgstatic.net/ii/profile.image/352962674216962-1461164267650_Q128/Roger_De_Keyzer.jpg",
+    "url": "https://www.researchgate.net/profile/Roger_De_Keyzer",
+    "affiliation": {
+        "@type": "Organization",
+        "name": "Australian Museum",
+        "url": "https://www.researchgate.net/institution/Australian_Museum",
+        "department": {
+            "@type": "Organization",
+            "name": "Department of Entomology",
+            "url": "https://www.researchgate.net/institution/Australian_Museum/department/Department_of_Entomology"
+        }
+    },
+    "award": []
+}
+;
 
 
-data = ipni;
+
+data = ipni_basionym;
 
 display_data(data);
 
