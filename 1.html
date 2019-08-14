@@ -130,6 +130,23 @@ function display_data(data) {
 	document.getElementById("record").appendChild(textnode); 
 }
 
+//----------------------------------------------------------------------------------------
+// Type of object
+function get_data_type(data) {
+
+	var type = 'unknown';
+	
+	if (data['@graph']) {
+		data = data['@graph'][0];
+	}
+	
+	if (data['@type']) {
+		type = data['@type'];
+	}
+	
+	return type;
+}
+
 
 	</script>
 	
@@ -178,7 +195,15 @@ get_literal = function(key) {
 	} else {
 		// name is an array of objects and/or strings (need to think about this)
 		if (Array.isArray(key)) {
-			literal = key[0]['@value'];
+		
+		    // just take first
+			// literal = key[0]['@value'];
+			
+			var strings = [];
+			for (var i in key) {
+				strings.push(key[i]['@value']);
+			}
+			literal = strings.join(' / ');			
 		}
 	}
 	
@@ -262,11 +287,7 @@ get_property_value = function(key, propertyID) {
 
 <%
 
-var item = null;
-
-item = data['@graph'][0]; // root of graph with single item
-
-//item = data;
+var item = data;
 
 %>
 
@@ -319,7 +340,7 @@ item = data['@graph'][0]; // root of graph with single item
 				authors.push('<u>' + get_literal(item.creator[i].creator.name) + '</u>');
 			}
 
-			// perosn
+			// person
 			if (item.creator[i]['@type'] == 'Person') { 
 				authors.push('<u>' + get_literal(item.creator[i].name) + '</u>');
 			}
@@ -377,6 +398,14 @@ item = data['@graph'][0]; // root of graph with single item
 	}
  %>	
  </div>	
+ 
+<!-- abstract -->
+<div style="font-size:0.8em;margin-top:0.5em;">
+
+<% if (item.description) { %>
+	<%= get_literal(item.description) %>
+<%} %>
+</div> 
 
 `;
 
@@ -402,7 +431,15 @@ get_literal = function(key) {
 	} else {
 		// name is an array of objects and/or strings (need to think about this)
 		if (Array.isArray(key)) {
-			literal = key[0]['@value'];
+		
+		    // just take first
+			// literal = key[0]['@value'];
+			
+			var strings = [];
+			for (var i in key) {
+				strings.push(key[i]['@value']);
+			}
+			literal = strings.join(' / ');			
 		}
 	}
 	
@@ -755,8 +792,8 @@ var work = {
 
 
 
-/*
-data = {
+
+var zenodo = {
   "description": "Ferguson, D.J., Glatz, R.V., Yeates, D. K. (2019): New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia. Zootaxa 4646 (2): 331-345, DOI: https://doi.org/10.11646/zootaxa.4646.2.8", 
   "creator": [
     {
@@ -936,7 +973,269 @@ data = {
   "name": "New stiletto flies in the genus Anabarhynchus Macquart (Diptera: Therevidae) from Kangaroo Island, South Australia"
 };
 
-*/
+work = {
+    "@context": {
+        "@vocab": "http://schema.org/",
+        "creator": {
+            "@id": "http://schema.org/creator"
+        },
+        "identifier": {
+            "@id": "http://schema.org/identifier",
+            "@container": "@set"
+        },
+        "sameAs": {
+            "@id": "http://schema.org/sameAs",
+            "@container": "@set"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "http://www.wikidata.org/entity/Q54763946",
+            "@type": "ScholarlyArticle",
+            "creator": [
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/1",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_1",
+                        "@type": "Person",
+                        "name": "NIELS P. KRISTENSEN"
+                    },
+                    "roleName": "1"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/2",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_2",
+                        "@type": "Person",
+                        "name": "DOUGLAS J. HILTON"
+                    },
+                    "roleName": "2"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/3",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_3",
+                        "@type": "Person",
+                        "name": "AXEL KALLIES"
+                    },
+                    "roleName": "3"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/4",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_4",
+                        "@type": "Person",
+                        "name": "LIZ MILLA"
+                    },
+                    "roleName": "4"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/5",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q21077816",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "de",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "it",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "en",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "nl",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "fr",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "cy",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "es",
+                                "@value": "Jadranka Rota"
+                            },
+                            {
+                                "@language": "ast",
+                                "@value": "Jadranka Rota"
+                            }
+                        ],
+                        "sameAs": [
+                            "https://orcid.org/0000-0003-0220-3920"
+                        ]
+                    },
+                    "roleName": "5"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/6",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q21077774",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "de",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "en",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "nl",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "es",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "ast",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "sl",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "fr",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "it",
+                                "@value": "Niklas Wahlberg"
+                            },
+                            {
+                                "@language": "sv",
+                                "@value": "Niklas Wahlberg"
+                            }
+                        ],
+                        "sameAs": [
+                            "https://orcid.org/0000-0002-1259-3363"
+                        ]
+                    },
+                    "roleName": "6"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/7",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_7",
+                        "@type": "Person",
+                        "name": "STEPHEN A. WILCOX"
+                    },
+                    "roleName": "7"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/8",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_8",
+                        "@type": "Person",
+                        "name": "RICHARD V. GLATZ"
+                    },
+                    "roleName": "8"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/9",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_9",
+                        "@type": "Person",
+                        "name": "DAVID A. YOUNG"
+                    },
+                    "roleName": "9"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/10",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_10",
+                        "@type": "Person",
+                        "name": "GLENN COCKING"
+                    },
+                    "roleName": "10"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/11",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_11",
+                        "@type": "Person",
+                        "name": "TED EDWARDS"
+                    },
+                    "roleName": "11"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/12",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_12",
+                        "@type": "Person",
+                        "name": "GEORGE W. GIBBS"
+                    },
+                    "roleName": "12"
+                },
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#role/13",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://www.wikidata.org/entity/Q54763946#creator_13",
+                        "@type": "Person",
+                        "name": "MIKE HALSEY"
+                    },
+                    "roleName": "13"
+                }
+            ],
+            "datePublished": "2015-01-00",
+            "identifier": [
+                {
+                    "@id": "http://www.wikidata.org/entity/Q54763946#doi",
+                    "@type": "PropertyValue",
+                    "propertyID": "doi",
+                    "value": "10.1111/syen.12115"
+                }
+            ],
+            "isPartOf": {
+                "@id": "http://www.wikidata.org/entity/Q4050530",
+                "@type": "Periodical",
+                "issn": [
+                    "0307-6970",
+                    "1365-3113"
+                ],
+                "name": {
+                    "@language": "en",
+                    "@value": "Systematic Entomology"
+                }
+            },
+            "issueNumber": "1",
+            "name": {
+                "@language": "en",
+                "@value": "A new extant family of primitive moths from Kangaroo Island, Australia, and its significance for understanding early Lepidoptera evolution"
+            },
+            "pagination": "5-16",
+            "sameAs": [
+                "https://doi.org/10.1111/syen.12115"
+            ],
+            "volumeNumber": "40"
+        }
+    ]
+};
+
+
 
 // taxonomic names
 
@@ -1293,14 +1592,368 @@ var rg = {
 }
 ;
 
+var zh = {
+    "@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005",
+            "@type": "ScholarlyArticle",
+            "creator": {
+                "@id": "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005#role/1",
+                "@type": "Role",
+                "creator": {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005#creator/1",
+                    "@type": "Person",
+                    "name": {
+                        "@language": "zh",
+                        "@value": "馬立名"
+                    }
+                },
+                "roleName": "1"
+            },
+            "datePublished": "2003",
+            "description": {
+                "@language": "zh",
+                "@value": "記述胭螨科Rhodacaridae 2新種:鴨綠江仿胭螨Rhodacarellus yalujiangensis sp. Nov.和安氏囊螨Asca anwenjui sp. nov."
+            },
+            "identifier": [
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005#sici",
+                    "@type": "PropertyValue",
+                    "propertyID": "sici",
+                    "value": "1005-9628(2003)12<85>"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005#doi",
+                    "@type": "PropertyValue",
+                    "propertyID": "doi",
+                    "value": "10.3969/j.issn.1005-9628.2003.02.005"
+                }
+            ],
+            "isPartOf": {
+                "@id": "http://worldcat.org/issn/1005-9628",
+                "@type": "Periodical",
+                "issn": "1005-9628",
+                "name": {
+                    "@language": "zh",
+                    "@value": "蛛形學報"
+                }
+            },
+            "issueNumber": "2",
+            "name": [
+                {
+                    "@language": "en",
+                    "@value": "A New Species of the Genus Rhodacarellus and a New Species of the Genus Asca (Acari: Gamasina: Rhodacaridae)"
+                },
+                {
+                    "@language": "zh",
+                    "@value": "仿胭螨屬和囊螨屬各一新種(蜱螨亞綱:革螨股:胭螨科)"
+                }
+            ],
+            "pagination": "85-90",
+            "sameAs": [
+                "https://doi.org/10.3969/j.issn.1005-9628.2003.02.005",
+                "http://e.wanfangdata.com.hk/zh-TW/d/Periodical_zxxb200302005.aspx"
+            ],
+            "url": "http://e.wanfangdata.com.hk/zh-TW/d/Periodical_zxxb200302005.aspx",
+            "volumeNumber": "12"
+        }
+    ]
+};
+
+var zh2 = {
+	"@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012",
+            "@type": "ScholarlyArticle",
+            "creator": [
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/1",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/1",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "HOU Shu-Xin"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "侯舒心"
+                            }
+                        ]
+                    },
+                    "roleName": "1"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/2",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/2",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "GUO Xian-Guo"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "郭憲國"
+                            }
+                        ]
+                    },
+                    "roleName": "2"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/3",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/3",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "MEN Xing-Yuan"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "門興元"
+                            }
+                        ]
+                    },
+                    "roleName": "3"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/4",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/4",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "QIAN Ti-Jun"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "錢體軍"
+                            }
+                        ]
+                    },
+                    "roleName": "4"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/5",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/5",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "WU Dian"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "吳滇"
+                            }
+                        ]
+                    },
+                    "roleName": "5"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#role/6",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#creator/6",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "en",
+                                "@value": "SHI Wu-Qiang"
+                            },
+                            {
+                                "@language": "zh",
+                                "@value": "石武祥"
+                            }
+                        ]
+                    },
+                    "roleName": "6"
+                }
+            ],
+            "datePublished": "2006-12-05",
+            "description": {
+                "@language": "zh",
+                "@value": "2000～2004年對云南省寄生恙螨進行現場調查,共采集到恙螨192種,結合其他文獻資料報道,目前云南省境內已經發現的恙螨至少有222種,隸屬3亞科27屬.本文歸納總結了到目前為止云南省所記載恙螨的名稱及所寄生宿主."
+            },
+            "identifier": [
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#sici",
+                    "@type": "PropertyValue",
+                    "propertyID": "sici",
+                    "value": "1005-9628(2006)15<114>"
+                },
+                {
+                    "@id": "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012#doi",
+                    "@type": "PropertyValue",
+                    "propertyID": "doi",
+                    "value": "10.3969/j.issn.1005-9628.2006.02.012"
+                }
+            ],
+            "isPartOf": {
+                "@id": "http://worldcat.org/issn/1005-9628",
+                "@type": "Periodical",
+                "issn": "1005-9628",
+                "name": {
+                    "@language": "zh",
+                    "@value": "蛛形學報"
+                }
+            },
+            "issueNumber": "2",
+            "name": [
+                {
+                    "@language": "en",
+                    "@value": "Research on Predation of Clubiona japonicola and Preliminary Report on Name List of Chiggers in Yunnan Province"
+                },
+                {
+                    "@language": "zh",
+                    "@value": "云南省恙螨名錄初報"
+                }
+            ],
+            "pagination": "114-122",
+            "sameAs": [
+                "https://doi.org/10.3969/j.issn.1005-9628.2006.02.012",
+                "http://e.wanfangdata.com.hk/zh-TW/d/Periodical_zxxb200602012.aspx"
+            ],
+            "url": "http://e.wanfangdata.com.hk/zh-TW/d/Periodical_zxxb200602012.aspx",
+            "volumeNumber": "15"
+        }
+    ]
+};
 
 
-data = ipni_basionym;
+var pt = {
+    "@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "https://doi.org/10.1590/s0031-10492012001900001",
+            "@type": "ScholarlyArticle",
+            "creator": [
+                {
+                    "@id": "https://doi.org/10.1590/s0031-10492012001900001#role/1",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.1590/s0031-10492012001900001#creator/1",
+                        "@type": "Person",
+                        "familyName": "Martins",
+                        "givenName": "Ubirajara R.",
+                        "name": "Martins, Ubirajara R."
+                    },
+                    "roleName": "1"
+                },
+                {
+                    "@id": "https://doi.org/10.1590/s0031-10492012001900001#role/2",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.1590/s0031-10492012001900001#creator/2",
+                        "@type": "Person",
+                        "familyName": "Galileo",
+                        "givenName": "Maria Helena M.",
+                        "name": "Galileo, Maria Helena M."
+                    },
+                    "roleName": "2"
+                }
+            ],
+            "datePublished": "2012",
+            "description": [
+                {
+                    "@language": "en",
+                    "@value": "Hypsioma brabanti sp. nov. from Trinidad and Tobago is described and illustrated. A new record (Trinidad and Tobago) for Leus ramuli (Bates, 1865) is presented."
+                },
+                {
+                    "@language": "pt",
+                    "@value": "Hypsioma brabanti sp. nov. de Trinidad and Tobagoé descrita e ilustrada. Novo registro (Trinidad and Tobago) para Leus ramuli (Bates, 1865) é apresentado."
+                }
+            ],
+            "identifier": [
+                {
+                    "@id": "https://doi.org/10.1590/s0031-10492012001900001#sici",
+                    "@type": "PropertyValue",
+                    "propertyID": "sici",
+                    "value": "0031-1049(2012)52<219>"
+                },
+                {
+                    "@id": "https://doi.org/10.1590/s0031-10492012001900001#doi",
+                    "@type": "PropertyValue",
+                    "propertyID": "doi",
+                    "value": "10.1590/S0031-10492012001900001"
+                }
+            ],
+            "isPartOf": {
+                "@id": "http://worldcat.org/issn/0031-1049",
+                "@type": "Periodical",
+                "issn": "0031-1049",
+                "name": "Papéis Avulsos de Zoologia (São Paulo)"
+            },
+            "issueNumber": "19",
+            "name": [
+                {
+                    "@language": "en",
+                    "@value": "Two species of Onciderini (Cerambycidae, Lamiinae) of the Institut Royal des Sciences Naturelles de Belgique, Brussels"
+                },
+                {
+                    "@language": "pt",
+                    "@value": "Duas espécies de Onciderini (Cerambycidae, Lamiinae) do Institut Royal des Sciences Naturelles de Belgique, Bruxelas"
+                }
+            ],
+            "pagination": "219-221",
+            "sameAs": [
+                "https://doi.org/10.1590/s0031-10492012001900001",
+                "http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0031-10492012001900001&lng=en&nrm=iso&tlng=pt",
+                "http://www.scielo.br/pdf/paz/v52n19/a01v52n19.pdf",
+                "https://doi.org/10.1590/S0031-10492012001900001"
+            ],
+            "url": "http://www.scielo.br/scielo.php?script=sci_abstract&pid=S0031-10492012001900001&lng=en&nrm=iso&tlng=pt",
+            "volumeNumber": "52"
+        }
+    ]
+};
+
+data = zh2;
+
+if (data['@graph']) {
+	data = data['@graph'][0];
+}
 
 display_data(data);
 
-//render(template_work);
-render(template_taxon_name);
+
+switch (get_data_type(data)) {
+	case 'ScholarlyArticle':
+		render(template_work);
+		break;
+		
+	case 'TaxonName':
+		render(template_taxon_name);
+		break;
+	
+	case 'tp:Person':
+	case 'Person':
+	default:
+		break;
+
+
+}
+
+
 
 
 </script>
