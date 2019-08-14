@@ -267,8 +267,10 @@ isodate_to_string = function (datestring) {
 get_property_value = function(key, propertyID) {
 	var value = '';
 	
-	if (typeof key === 'object' && !Array.isArray(key)) {	
-		value = key.value;
+	if (typeof key === 'object' && !Array.isArray(key)) {
+		if (key.propertyID === propertyID) {	
+			value = key.value;
+		}
 	} else {
 		if (Array.isArray(key)) {
 			for (var i in key) {
@@ -400,9 +402,10 @@ var item = data;
  </div>	
  
 <!-- abstract -->
-<div style="font-size:0.8em;margin-top:0.5em;">
+<div style="font-size:0.8em;margin-top:0.5em;color: rgb(128,128,128);">
 
 <% if (item.description) { %>
+	<div>Abstract</div>
 	<%= get_literal(item.description) %>
 <%} %>
 </div> 
@@ -504,7 +507,10 @@ get_property_value = function(key, propertyID) {
 	var value = '';
 	
 	if (typeof key === 'object' && !Array.isArray(key)) {	
-		value = key.value;
+		if (key.propertyID === propertyID) {	
+			value = key.value;
+		}
+
 	} else {
 		if (Array.isArray(key)) {
 			for (var i in key) {
@@ -1927,7 +1933,194 @@ var pt = {
     ]
 };
 
-data = zh2;
+var zh3 = {
+    "@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013",
+            "@type": "ScholarlyArticle",
+            "creator": [
+                {
+                    "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013#role/1",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013#creator/1",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "zh",
+                                "@value": "任国栋"
+                            },
+                            {
+                                "@language": "en",
+                                "@value": "REN Guo-Dong"
+                            }
+                        ]
+                    },
+                    "roleName": "1"
+                },
+                {
+                    "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013#role/2",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013#creator/2",
+                        "@type": "Person",
+                        "name": [
+                            {
+                                "@language": "zh",
+                                "@value": "张承礼"
+                            },
+                            {
+                                "@language": "en",
+                                "@value": "ZHANG Cheng-Li"
+                            }
+                        ]
+                    },
+                    "roleName": "2"
+                }
+            ],
+            "datePublished": "2010",
+            "description": {
+                "@language": "zh",
+                "@value": "对中国直扁足甲属Blindus Mulsant et Rey,1853进行了分类总结,分别给出世界已知8种及亚种的♂和♀成虫检索表,描述1新种:弯胫直扁足甲B.curvotibius sp.nov..模式标本保存在河北大学博物馆."
+            },
+            "identifier": {
+                "@id": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013#sici",
+                "@type": "PropertyValue",
+                "propertyID": "sici",
+                "value": "1000-0739(2010)35<63>"
+            },
+            "isPartOf": {
+                "@id": "http://worldcat.org/issn/1000-0739",
+                "@type": "Periodical",
+                "issn": "1000-0739",
+                "name": [
+                    {
+                        "@language": "zh",
+                        "@value": "动物分类学报"
+                    },
+                    {
+                        "@language": "en",
+                        "@value": "ACTA ZOOTAXONOMICA SINICA"
+                    }
+                ]
+            },
+            "issueNumber": "1",
+            "name": [
+                {
+                    "@language": "zh",
+                    "@value": "中国直扁足甲属分类及一新种记述(鞘翅目,拟步甲科)"
+                },
+                {
+                    "@language": "en",
+                    "@value": "THE CHINESE BLINDUS MULSANT ET REY (COLEOPTERA, TENEBRIONIDAE), WITH DESCRIPTION OF A NEW SPECIES"
+                }
+            ],
+            "pagination": "63-70",
+            "sameAs": [
+                "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013",
+                "http://zootax.com.cn/admin/downfile.aspx?id=8912"
+            ],
+            "url": "http://med.wanfangdata.com.cn/Paper/Detail/PeriodicalPaper_dwfl201001013",
+            "volumeNumber": "35"
+        }
+    ]
+};
+
+var zh4 = {
+    "@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "https://doi.org/10.6165/tai.2008.53(3).248",
+            "@type": "ScholarlyArticle",
+            "creator": [
+                {
+                    "@id": "https://doi.org/10.6165/tai.2008.53(3).248#role/1",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.6165/tai.2008.53(3).248#creator/1",
+                        "@type": "Person",
+                        "name": {
+                            "@language": "en",
+                            "@value": "Chayan Picheansoonthon"
+                        }
+                    },
+                    "roleName": "1"
+                },
+                {
+                    "@id": "https://doi.org/10.6165/tai.2008.53(3).248#role/2",
+                    "@type": "Role",
+                    "creator": {
+                        "@id": "https://doi.org/10.6165/tai.2008.53(3).248#creator/2",
+                        "@type": "Person",
+                        "name": {
+                            "@language": "en",
+                            "@value": "Supachai Koonterm"
+                        }
+                    },
+                    "roleName": "2"
+                }
+            ],
+            "datePublished": "2008-09-01",
+            "description": [
+                {
+                    "@language": "zh",
+                    "@value": "本文描述泰國東北部所產三種薑科Caulokaempferia屬植物，C. phuwoaensis Picheans. & Koonterm.，C. phulangkaensis Picheans.和C. phutokensis Picheans.，並提供手繪圖。分子證據亦支持三個分類群的建立，而此三種植物與C. bracteata K. Larsen & S. S. Larsen和C. jirawongsei Picheans. & Mokkamul近似。"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Three new species of the genus Caulokaempferia (Zingiberaceae) from northeastern Thailand, C. phuwoaensis Picheans. & Koonterm, C. phulangkaensis Picheans., and C. phutokensis Picheans., are described and illustrated. Relationship with other closely related taxa is also discussed."
+                }
+            ],
+            "identifier": [
+                {
+                    "@id": "https://doi.org/10.6165/tai.2008.53(3).248#sici",
+                    "@type": "PropertyValue",
+                    "propertyID": "sici",
+                    "value": "0372-333X(2008)53<248>"
+                },
+                {
+                    "@id": "https://doi.org/10.6165/tai.2008.53(3).248#doi",
+                    "@type": "PropertyValue",
+                    "propertyID": "doi",
+                    "value": "10.6165/tai.2008.53(3).248"
+                }
+            ],
+            "isPartOf": {
+                "@id": "http://worldcat.org/issn/0372-333X",
+                "@type": "Periodical",
+                "issn": "0372-333X",
+                "name": "Taiwania"
+            },
+            "issueNumber": "3",
+            "name": [
+                {
+                    "@language": "zh",
+                    "@value": "泰國東北部產薑科黃花Caulokaempferias屬三種新種植物"
+                },
+                {
+                    "@language": "en",
+                    "@value": "Three New Species of the Yellow-flowered Caulokaempferia (Zingiberaceae) from Northeastern Thailand"
+                }
+            ],
+            "pagination": "248-257",
+            "sameAs": [
+                "https://doi.org/10.6165/tai.2008.53(3).248",
+                "http://www.airitilibrary.com/Publication/Index?FirstID=0372333X-200809-53-3-248-257-a",
+                "http://tai2.ntu.edu.tw/taiwania/pdf/tai.2008.53.248.pdf"
+            ],
+            "url": "http://www.airitilibrary.com/Publication/Index?FirstID=0372333X-200809-53-3-248-257-a",
+            "volumeNumber": "53"
+        }
+    ]
+};
+
+
+data = zh4;
 
 if (data['@graph']) {
 	data = data['@graph'][0];
