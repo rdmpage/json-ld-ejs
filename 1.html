@@ -15,6 +15,12 @@
 		.infraspecificEpithet {
 			font-style: italic;
 		}
+		
+		/* links don't have underlines */
+		a:link {
+  			text-decoration: none;
+		}
+		
 	</style>
 	
 <script src="js/jsonld.js"></script>
@@ -531,9 +537,7 @@ get_property_value = function(key, propertyID) {
 
 var item = null;
 
-item = data['@graph'][0]; // root of graph with single item
-
-//item = data;
+item = data;
 
 %>
 
@@ -684,6 +688,208 @@ item = data['@graph'][0]; // root of graph with single item
 
 `;
 
+var template_datafeed = `
+
+<%
+
+// Define functions in template, see https://stackoverflow.com/a/40968695/9684
+
+//----------------------------------------------------------------------------------------
+// Get a single string from a literal that may have multilingual values
+get_literal = function(key) {
+	var literal = '';
+	
+	// literal is a simple string
+	if (typeof key === 'string') {
+		literal = key;
+	}
+	
+	// name is an object so we have one language stored in @value
+	if (typeof key === 'object' && !Array.isArray(key)) {	
+		literal = key['@value'];
+	} else {
+		// name is an array of objects and/or strings (need to think about this)
+		if (Array.isArray(key)) {
+		
+		    // just take first
+			// literal = key[0]['@value'];
+			
+			var strings = [];
+			for (var i in key) {
+				strings.push(key[i]['@value']);
+			}
+			literal = strings.join(' / ');			
+		}
+	}
+	
+	return literal;
+}
+
+//----------------------------------------------------------------------------------------
+// Convert ISO data to a human-readable string (PubMed-style)
+// My databases use -00 to indicate no month or no day, and this confuses Javascript
+// Date so we need to set the options appropriately
+isodate_to_string = function (datestring) {
+
+	// By default assume datestring is a year only
+	var options = {};
+	options.year = 'numeric';
+	
+	// Test for valid month, then day (because we use -00 to indicate no data)
+	var m = null;
+	
+	if (!m) {	
+		m = datestring.match(/^([0-9]{4})$/);
+		if (m) {
+			// year only
+			datestring = m[1]; 
+		}
+	}
+	
+	if (!m) {		
+		m = datestring.match(/^([0-9]{4})-([0-9]{2})-00/);
+		if (m) {
+			
+			if (m[2] == '00') {
+				// Javascript can't handle -00-00 date string so set to January 1st 
+				// which won't be output as we're only outputting the year
+				datestring = m[1] + '-01-01';
+			} else {
+				// We have a month but no day
+				datestring = m[1] + '-' + m[2] + '-01';
+				options.month = 'short';
+			}		
+		}
+	}
+	
+	if (!m) {	
+		m = datestring.match(/^([0-9]{4})-([0-9]{2})-([0-9]{2})/);
+		if (m) {
+			// we have yea, month, and day
+			options.month = 'short';
+			options.day = 'numeric';
+		}
+	}
+	
+	var d = new Date(datestring);
+	datestring = d.toLocaleString('en-gb', options);
+	
+	return datestring;		
+}
+
+//----------------------------------------------------------------------------------------
+
+get_property_value = function(key, propertyID) {
+	var value = '';
+	
+	if (typeof key === 'object' && !Array.isArray(key)) {	
+		if (key.propertyID === propertyID) {	
+			value = key.value;
+		}
+
+	} else {
+		if (Array.isArray(key)) {
+			for (var i in key) {
+				if (key[i].propertyID === propertyID) {
+					value = key[i].value;
+				}
+			}
+		}	
+	}
+	
+	return value;
+}
+
+%>
+
+
+<%
+
+var item = null;
+
+item = data;
+
+%>
+
+<!-- title -->
+<div style="font-size:18px;font-weight:bold;margin-top:0.5em;">
+	<h1>
+		<%= get_literal(item.name) %>
+	</h1>
+</div>
+
+<!-- data feed items -->
+<div>
+	<% for (var i in item.dataFeedElement) { %>
+		<div style="margin:10px;padding:4px;border-top:1px solid rgb(192,192,192);">
+		
+		<% if (item.dataFeedElement[i].url) { %>
+			<a href="<%= item.dataFeedElement[i].url %>">
+		<% } %>
+		
+		<strong>
+		<%= get_literal(item.dataFeedElement[i].name) %>
+		</strong>
+		
+		<% if (item.dataFeedElement[i].url) { %>
+			</a>
+		<% } %>
+		
+		
+		<!-- creators -->
+		<% if (item.dataFeedElement[i].creator) { %>
+			
+			<div style="font-size:0.7em;">
+			<%
+			var authors = [];
+			for (var j in item.dataFeedElement[i].creator) { 
+				authors.push('<u>' + get_literal(item.dataFeedElement[i].creator[j]) + '</u>');
+			}
+			var author_string = authors.join(', ');
+			%>
+			<%- author_string %>	
+			</div>
+
+		<% } %>
+		
+		<!-- date -->
+		<% if (item.dataFeedElement[i].datePublished) {%>
+			<div style="font-size:0.7em;">
+			<%= isodate_to_string(item.dataFeedElement[i].datePublished) %>
+			</div>
+		<% } %>
+		
+		<!-- identifiers -->
+		<div style="font-size:0.7em;margin-top:0.5em;">
+		<% if (item.dataFeedElement[i].identifier) {
+			 var id = '';
+	 
+			// DOI
+			id = get_property_value(item.dataFeedElement[i].identifier, 'doi');	  
+			if (id != '') {  %>	
+				DOI:
+				<a href="https://doi.org/<%=id%>">
+				<%= id %>
+				</a>
+			<% }
+	
+			}
+		 %>	
+		 </div>			
+
+
+		
+		</div>
+	<% } %>
+
+
+</div>
+
+
+
+
+
+`;
 
 
 var work = {
@@ -2119,8 +2325,137 @@ var zh4 = {
     ]
 };
 
+var feed = {
+    "@context": {
+        "@vocab": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "http://example.rss",
+            "@type": "DataFeed",
+            "dataFeedElement": [
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "C. Bonillo",
+                        "J. R. Ovenden",
+                        "L. Taillebois",
+                        "M. Castelin",
+                        "P. Keith"
+                    ],
+                    "datePublished": "2013",
+                    "identifier": {
+                        "@id": "https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2#doi",
+                        "@type": "PropertyValue",
+                        "propertyID": "doi",
+                        "value": "10.1371/journal.pone.0075465"
+                    },
+                    "name": "Contrasting genetic structure among populations of two amphidromous fish species (Sicydiinae) in the Central West Pacific",
+                    "url": "https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "H. K. Larson",
+                        "H. K Larson",
+                        "D. J. Russell",
+                        "P. A. Thuesen",
+                        "B. C. Ebner",
+                        "J. Prince",
+                        "P. Keith",
+                        "R. M. Silcock"
+                    ],
+                    "datePublished": "2011",
+                    "identifier": {
+                        "@id": "https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5#doi",
+                        "@type": "PropertyValue",
+                        "propertyID": "doi",
+                        "value": "10.1371/journal.pone.0026685"
+                    },
+                    "name": "Amphidromy links a newly documented fish community of continental Australian streams, to oceanic islands of the west Pacific",
+                    "url": "https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/b373061e-7571-4480-8be5-8d4fe79e783c",
+                    "@type": "Book",
+                    "creator": [
+                        "C. Lord",
+                        "D. Kalfatak",
+                        "E. Vigneux",
+                        "G. Marquet",
+                        "P. Keith"
+                    ],
+                    "datePublished": "2010",
+                    "name": "Poissons et crustacés d'eau douce du Vanuatu",
+                    "url": "https://biodiversity.org.au/afd/publication/b373061e-7571-4480-8be5-8d4fe79e783c"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/fc286356-bc50-4bb4-88ef-60ce7f3807a9",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "L. Taillebois",
+                        "P. Keith"
+                    ],
+                    "datePublished": "2014",
+                    "name": "Status and distribution of Smilosicyopus species (Teleostei, Gobiinae)",
+                    "url": "https://biodiversity.org.au/afd/publication/fc286356-bc50-4bb4-88ef-60ce7f3807a9"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/47561ae7-4f94-49ca-b38f-7a97196ff08d",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "E. Vigneux",
+                        "G. Marquet",
+                        "P. Keith"
+                    ],
+                    "datePublished": "2003",
+                    "name": "Atlas des poissons et des crustacés d'eau douce de Nouvelle-Calédonie",
+                    "url": "https://biodiversity.org.au/afd/publication/47561ae7-4f94-49ca-b38f-7a97196ff08d"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/ef3b944f-a1a3-4db5-88e8-c37178e35710",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "K. Tsukamoto",
+                        "A. Couloux",
+                        "A. Dettai",
+                        "A. Dettaï",
+                        "C. Lord",
+                        "J. Lorion",
+                        "P. Keith",
+                        "S. Watanabe"
+                    ],
+                    "datePublished": "2011",
+                    "name": "Phylogeny and biogeography of Sicydiinae (Teleostei: Gobiidae) inferred from mitochondrial and nuclear genes",
+                    "url": "https://biodiversity.org.au/afd/publication/ef3b944f-a1a3-4db5-88e8-c37178e35710"
+                },
+                {
+                    "@id": "https://biodiversity.org.au/afd/publication/f8c77953-7a40-4018-9a32-2ac994b86836",
+                    "@type": "ScholarlyArticle",
+                    "creator": [
+                        "P. A. Thuesen",
+                        "B. C. Ebner",
+                        "H. Larson",
+                        "P. Keith"
+                    ],
+                    "datePublished": "2012",
+                    "name": "A review of distribution, field observations and precautionary conservation requirements for sicydiine gobies in Australia",
+                    "url": "https://biodiversity.org.au/afd/publication/f8c77953-7a40-4018-9a32-2ac994b86836"
+                }
+            ],
+            "description": "Dependent on the input data or the where condition ( here all datasets with alimayilov )",
+            "name": "Test RSS Feed",
+            "url": "http://example.rss"
+        }
+    ]
+};
 
 data = zh4;
+
+data = feed;
+//data = ipni_basionym;
 
 if (data['@graph']) {
 	data = data['@graph'][0];
@@ -2136,6 +2471,10 @@ switch (get_data_type(data)) {
 		
 	case 'TaxonName':
 		render(template_taxon_name);
+		break;
+
+	case 'DataFeed':
+		render(template_datafeed);
 		break;
 	
 	case 'tp:Person':

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	
+    xmlns="http://schema.org/"
+	
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	
+    xmlns:sesame="http://www.openrdf.org/schema/sesame#"
+	
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+	
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	
+    xmlns:fn="http://www.w3.org/2005/xpath-functions#"
+	
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+	
+    xmlns:hint="http://www.bigdata.com/queryHints#"
+	
+    xmlns:bd="http://www.bigdata.com/rdf#"
+	
+    xmlns:bds="http://www.bigdata.com/rdf/search#">
+    <rdf:Description rdf:about="http://example.rss">
+        <rdf:type rdf:resource="http://schema.org/DataFeed"/>
+        <name>Test RSS Feed</name>
+        <url>http://example.rss</url>
+        <description>Dependent on the input data or the where condition ( here all datasets with alimayilov )</description>
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>Contrasting genetic structure among populations of two amphidromous fish species (Sicydiinae) in the Central West Pacific</name>
+        <url>https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2</url>
+        <datePublished>2013</datePublished>
+        <creator>C. Bonillo</creator>
+        <identifier rdf:resource="https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2#doi"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2#doi">
+        <rdf:type rdf:resource="http://schema.org/PropertyValue"/>
+        <propertyID>doi</propertyID>
+        <value>10.1371/journal.pone.0075465</value>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/46a905c8-4e89-40c6-addd-601797dbb8b2">
+        <creator>J. R. Ovenden</creator>
+        <creator>L. Taillebois</creator>
+        <creator>M. Castelin</creator>
+        <creator>P. Keith</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>Amphidromy links a newly documented fish community of continental Australian streams, to oceanic islands of the west Pacific</name>
+        <url>https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5</url>
+        <datePublished>2011</datePublished>
+        <creator>H. K. Larson</creator>
+        <identifier rdf:resource="https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5#doi"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5#doi">
+        <rdf:type rdf:resource="http://schema.org/PropertyValue"/>
+        <propertyID>doi</propertyID>
+        <value>10.1371/journal.pone.0026685</value>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/b37ba935-edfe-432d-8a00-a52439e645a5">
+        <creator>H. K Larson</creator>
+        <creator>D. J. Russell</creator>
+        <creator>P. A. Thuesen</creator>
+        <creator>B. C. Ebner</creator>
+        <creator>J. Prince</creator>
+        <creator>P. Keith</creator>
+        <creator>R. M. Silcock</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/b373061e-7571-4480-8be5-8d4fe79e783c"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/b373061e-7571-4480-8be5-8d4fe79e783c">
+        <rdf:type rdf:resource="http://schema.org/Book"/>
+        <name>Poissons et crustacés d'eau douce du Vanuatu</name>
+        <url>https://biodiversity.org.au/afd/publication/b373061e-7571-4480-8be5-8d4fe79e783c</url>
+        <datePublished>2010</datePublished>
+        <creator>C. Lord</creator>
+        <creator>D. Kalfatak</creator>
+        <creator>E. Vigneux</creator>
+        <creator>G. Marquet</creator>
+        <creator>P. Keith</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/fc286356-bc50-4bb4-88ef-60ce7f3807a9"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/fc286356-bc50-4bb4-88ef-60ce7f3807a9">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>Status and distribution of Smilosicyopus species (Teleostei, Gobiinae)</name>
+        <url>https://biodiversity.org.au/afd/publication/fc286356-bc50-4bb4-88ef-60ce7f3807a9</url>
+        <datePublished>2014</datePublished>
+        <creator>L. Taillebois</creator>
+        <creator>P. Keith</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/47561ae7-4f94-49ca-b38f-7a97196ff08d"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/47561ae7-4f94-49ca-b38f-7a97196ff08d">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>Atlas des poissons et des crustacés d'eau douce de Nouvelle-Calédonie</name>
+        <url>https://biodiversity.org.au/afd/publication/47561ae7-4f94-49ca-b38f-7a97196ff08d</url>
+        <datePublished>2003</datePublished>
+        <creator>E. Vigneux</creator>
+        <creator>G. Marquet</creator>
+        <creator>P. Keith</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/ef3b944f-a1a3-4db5-88e8-c37178e35710"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/ef3b944f-a1a3-4db5-88e8-c37178e35710">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>Phylogeny and biogeography of Sicydiinae (Teleostei: Gobiidae) inferred from mitochondrial and nuclear genes</name>
+        <url>https://biodiversity.org.au/afd/publication/ef3b944f-a1a3-4db5-88e8-c37178e35710</url>
+        <datePublished>2011</datePublished>
+        <creator>K. Tsukamoto</creator>
+        <creator>A. Couloux</creator>
+        <creator>A. Dettai</creator>
+        <creator>A. Dettaï</creator>
+        <creator>C. Lord</creator>
+        <creator>J. Lorion</creator>
+        <creator>P. Keith</creator>
+        <creator>S. Watanabe</creator>
+    </rdf:Description>
+    <rdf:Description rdf:about="http://example.rss">
+        <dataFeedElement rdf:resource="https://biodiversity.org.au/afd/publication/f8c77953-7a40-4018-9a32-2ac994b86836"/>
+    </rdf:Description>
+    <rdf:Description rdf:about="https://biodiversity.org.au/afd/publication/f8c77953-7a40-4018-9a32-2ac994b86836">
+        <rdf:type rdf:resource="http://schema.org/ScholarlyArticle"/>
+        <name>A review of distribution, field observations and precautionary conservation requirements for sicydiine gobies in Australia</name>
+        <url>https://biodiversity.org.au/afd/publication/f8c77953-7a40-4018-9a32-2ac994b86836</url>
+        <datePublished>2012</datePublished>
+        <creator>P. A. Thuesen</creator>
+        <creator>B. C. Ebner</creator>
+        <creator>H. Larson</creator>
+        <creator>P. Keith</creator>
+    </rdf:Description>
+</rdf:RDF>
