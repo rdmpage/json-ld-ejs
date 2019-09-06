@@ -150,6 +150,13 @@ function get_data_type(data) {
 		type = data['@type'];
 	}
 	
+	if (type === 'unknown') {
+		// some graphs use Dublin Core to assert type, not @type (sigh))
+		if (data['dc:type']) {
+			type = data['dc:type'];
+		}
+	}
+
 	return type;
 }
 
@@ -2452,9 +2459,68 @@ var feed = {
     ]
 };
 
+var worms={
+    "@context": {
+        "dwc": "http://rs.tdwg.org/dwc/terms/",
+        "dcterms": "http://purl.org/dc/terms/",
+        "dc": "http://purl.org/dc/elements/1.1/"
+    },
+    "@graph": [
+        {
+            "@id": "urn:lsid:marinespecies.org:taxname:1258920",
+            "dc:creator": "Herbert, David",
+            "dc:date": "2019-09-06",
+            "dc:identifier": "urn:lsid:marinespecies.org:taxname:1258920",
+            "dc:language": "en",
+            "dc:license": "http://creativecommons.org/licenses/by/4.0/",
+            "dc:publisher": "World Register of Marine Species (WoRMS)",
+            "dc:relation": "http://www.marinespecies.org/aphia.php?p=taxdetails&amp;id=1258920",
+            "dc:subject": "Trachycystis ectima Melvill & Ponsonby, 1899",
+            "dc:title": "Trachycystis ectima",
+            "dc:type": "ScientificName",
+            "dcterms:bibliographicCitation": "MolluscaBase (2019). MolluscaBase. Trachycystis ectima Melvill & Ponsonby, 1899. Accessed through: World Register of Marine Species at: http://www.marinespecies.org/aphia.php?p=taxdetails&id=1258920 on 2019-09-06",
+            "dcterms:created": "2018-06-09T15:42:07+01:00",
+            "dcterms:isReplacedBy": {
+                "@id": "urn:lsid:marinespecies.org:taxname:1263828"
+            },
+            "dcterms:modified": "2018-07-14T14:36:23+01:00",
+            "dcterms:rightsHolder": "WoRMS Editorial Board",
+            "dwc:ScientificName": "Trachycystis ectima Melvill & Ponsonby, 1899",
+            "dwc:acceptedNameUsageID": {
+                "@id": "urn:lsid:marinespecies.org:taxname:1263828"
+            },
+            "dwc:class": "Gastropoda",
+            "dwc:family": "Charopidae",
+            "dwc:genus": "Trachycystis",
+            "dwc:infraspecificEpithet": "",
+            "dwc:kingdom": "Animalia",
+            "dwc:namePublishedIn": "Melvill, J. C. & Ponsonby, J. H. (1899). Further contribution towards a check-list of the non-marine molluscan fauna of South Africa, with descriptions of fourteen new species. <em>The Annals and Magazine of Natural History.</em> (7) 4 (21): 192-200, pl. 3. London. [31 August].",
+            "dwc:namePublishedInYear": "1899",
+            "dwc:order": "Stylommatophora",
+            "dwc:parentNameUsageID": {
+                "@id": "urn:lsid:marinespecies.org:taxname:996038"
+            },
+            "dwc:phylum": "Mollusca",
+            "dwc:scientificNameAuthorship": "Melvill & Ponsonby, 1899",
+            "dwc:scientificNameID": {
+                "@id": "urn:lsid:marinespecies.org:taxname:1258920"
+            },
+            "dwc:specificEpithet": "ectima",
+            "dwc:subgenus": "",
+            "dwc:taxonRank": "species",
+            "dwc:taxonomicStatus": "unaccepted"
+        }
+    ]
+};
+
 data = zh4;
 
 data = feed;
+
+data = worms;
+//data = spider;
+//data = zh;
+
 //data = ipni_basionym;
 
 if (data['@graph']) {
@@ -2469,6 +2535,8 @@ switch (get_data_type(data)) {
 		render(template_work);
 		break;
 		
+	case 'ScientificName':
+	case 'Scientific Name': // WTF!
 	case 'TaxonName':
 		render(template_taxon_name);
 		break;
