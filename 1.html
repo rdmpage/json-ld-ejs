@@ -592,7 +592,7 @@ item = data;
 	<% } %>
 
 
-	<%= get_literal(item['dwc:namePublishedIn']) %>
+	<%- get_literal(item['dwc:namePublishedIn']) %>
 	
 	<% if (item['nmbe:publishedOnPage']) { %>
 	(see page <%= get_literal(item['nmbe:publishedOnPage']) %> )
